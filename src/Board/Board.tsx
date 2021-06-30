@@ -18,9 +18,9 @@ type Player = "x" | "o";
 
 type BoardProps = {
   gameOverFunc(winner: Winner): void;
-}
+};
 
-export const Board: FC<BoardProps> = ({gameOverFunc}) => {
+export const Board: FC<BoardProps> = ({ gameOverFunc }) => {
   const [cells, setCells] = useState<CellVal[]>(Array(9).fill(null));
 
   const [cellsX, setCellsX] = useState<number[]>([]);
@@ -29,7 +29,9 @@ export const Board: FC<BoardProps> = ({gameOverFunc}) => {
   const [player, setPlayer] = useState<Player>("x");
 
   const toggleHandler = (i: number) => {
-    player === "x" ? setCellsX(prev => [...prev, i]) : setCellsO(prev => [...prev, i]);
+    player === "x"
+      ? setCellsX((prev) => [...prev, i])
+      : setCellsO((prev) => [...prev, i]);
     player === "x" ? setPlayer("o") : setPlayer("x");
     setCells((prev) =>
       prev.map((cell, index) => {
@@ -42,29 +44,31 @@ export const Board: FC<BoardProps> = ({gameOverFunc}) => {
   };
 
   const winFunc = (arr: number[]): boolean => {
-    const boolWin = winPos.find(el => {
-      return el.every(e => arr.includes(e))
-    })
-    return !!boolWin
+    const boolWin = winPos.find((el) => {
+      return el.every((e) => arr.includes(e));
+    });
+    return !!boolWin;
   };
 
   useEffect(() => {
-    if (winFunc(cellsX)){
-      gameOverFunc("x")
+    if (winFunc(cellsX)) {
+      return gameOverFunc("x");
     }
-    if (winFunc(cellsO)){
-      gameOverFunc("o")
+    if (winFunc(cellsO)) {
+      return gameOverFunc("o");
     }
     if (cells.filter((c) => c).length === 9) {
-      gameOverFunc("draw");
+      return gameOverFunc("draw");
     }
   }, [cells, cellsX, cellsO, gameOverFunc]);
 
   return (
-    <div className={style.board}>
-      {cells.map((cell, i) => (
-        <Cell key={i} i={i} cell={cell} toggleHandler={toggleHandler} />
-      ))}
-    </div>
+    <>
+      <div className={style.board}>
+        {cells.map((cell, i) => (
+          <Cell key={i} i={i} cell={cell} toggleHandler={toggleHandler} />
+        ))}
+      </div>
+    </>
   );
 };
