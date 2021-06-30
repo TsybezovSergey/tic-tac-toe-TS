@@ -11,6 +11,6 @@ type CellProps = {
 
 export const Cell: FC<CellProps> = ({cell, i, toggleHandler}) => {
   return (
-    <div className={style.cell} onClick={() => toggleHandler(i)}>{cell}</div>
+    <div className={style.cell} onClick={() => toggleHandler(i)}>{cell && <h3>{cell}</h3>}</div>
   )
 }
